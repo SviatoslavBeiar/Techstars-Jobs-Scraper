@@ -8,8 +8,7 @@ Spring Boot app that scrapes job postings from jobs.techstars.com by **Job funct
 - Multithreaded detail fetching
 - REST endpoints (`/api/jobs`, `/api/jobs/scrape`)
 - SQL dump with schema + data
-- Docker Compose for PostgreSQL,
-- Clean code, layered architecture
+- Docker Compose db, selenium, app
 
 By default the app auto-runs a scrape for `Software Engineering` and writes an SQL dump to `data/software-engineering-dump.sql`.
 
