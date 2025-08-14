@@ -1,0 +1,43 @@
+spring:
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/techstars}   # <-- host = db
+    username: ${DB_USER:postgres}
+    password: ${DB_PASSWORD:postgres}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+        jdbc:
+          lob:
+            non_contextual_creation: true
+  main:
+    banner-mode: "console"
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  web:
+    resources:
+      add-mappings: false
+  servlet:
+    multipart:
+      enabled: true
+  # опційно лог SQL:
+  # logging:
+  #   level:
+  #     org.hibernate.SQL: debug
+
+scraper:
+  auto-run: true
+  use-selenium: true                  # вмикаємо Selenium
+  use-selenium-for-details: false
+  headless: true
+  max-threads: 4
+  detail-timeout-seconds: 35
+  functions:
+    - "Software Engineering"
+  sql-dump-path: "data/software-engineering-dump.sql"
+
+  # URL селеніум-хаба передаємо через ENV (див. compose)
+  # у коді має зчитуватись як System.getenv("SELENIUM_REMOTE_URL")

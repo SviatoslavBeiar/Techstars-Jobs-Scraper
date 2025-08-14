@@ -1,0 +1,53 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-techstars}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-techstars}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+
+  selenium:
+    image: selenium/standalone-chrome:4.34.0-20250727   # або :latest
+    shm_size: 2gb
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "-", "http://localhost:4444/status"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      # БД
+      DB_URL: jdbc:postgresql://db:5432/techstars
+      DB_USER: ${POSTGRES_USER:-postgres}
+      DB_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+
+      # Скрепер
+      SCRAPER_AUTO_RUN: "true"
+      SCRAPER_USE_SELENIUM: "true"
+      SCRAPER_USE_SELENIUM_FOR_DETAILS: "false"
+      SCRAPER_MAX_THREADS: "4"
+
+      # Selenium RemoteWebDriver (твій код має це використовувати)
+      SELENIUM_REMOTE_URL: "http://selenium:4444/wd/hub"
+
+      # Опційно — стабільність JVM у контейнері
+      JAVA_TOOL_OPTIONS: "-XX:+UseContainerSupport -XX:MaxRAMPercentage=75.0"
+    depends_on:
+      db:
+        condition: service_healthy
+      selenium:
+        condition: service_healthy
+
+volumes:
+  dbdata: {}
