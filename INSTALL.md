@@ -7,8 +7,10 @@
 - Chrome installed (Selenium uses chromedriver)
 
 ## 1) run 3 services with docker (Database, app, selenium)
+1)run docker
+2) cd Techstars-Jobs-Scraper-main
+3) run commands
 ```bash
-cp .env.example .env
 docker compose build app      # build the Spring Boot image (runs Maven inside)
 docker compose up -d          # start all services
 ```
