@@ -6,12 +6,18 @@
 - Docker (for Postgres) or an existing PostgreSQL instance
 - Chrome installed (Selenium uses chromedriver)
 
-## 1) Database
+## 1) run 3 services with docker (Database, app, selenium)
 ```bash
 cp .env.example .env
-docker compose up -d
+docker compose build app      # build the Spring Boot image (runs Maven inside)
+docker compose up -d          # start all services
 ```
-This provisions Postgres on port `5432` with DB `techstars`.
+db – PostgreSQL 16 on 5432
+
+selenium – Chrome (Selenium Grid standalone) on 4444 (internal)
+
+app – Spring Boot API on 8080
+
 
 ## 2) Build
 ```bash
