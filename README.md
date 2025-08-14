@@ -17,7 +17,6 @@ See **INSTALL.md** for full setup and configuration.
 
 ## 1) run 3 services with docker (Database, app, selenium)
 ```bash
-cp .env.example .env
 docker compose build app      # build the Spring Boot image (runs Maven inside)
 docker compose up -d          # start all services
 ```
